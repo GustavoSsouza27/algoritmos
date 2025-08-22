@@ -1,6 +1,7 @@
 ﻿using System;
+using System;
+using System.Linq;
 using System.Text.RegularExpressions;
-
 
 namespace _08_ValidaCPF
 {
@@ -8,30 +9,38 @@ namespace _08_ValidaCPF
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Solicite o seu CPF:");
+
+            Console.Write("Digite o CPF: ");
             string cpf = Console.ReadLine();
 
+            // 1 - Eliminar caractres não numéricos
             cpf = Regex.Replace(cpf, "[^0-9]", "");
 
-            Console.WriteLine($"Somente numero {cpf}");
+            // 2 - Validar se tem 11 digitos
             if (cpf.Length != 11)
-                Console.WriteLine("CPF deve conter 11 digitos: ");
-            return;
             {
-                Console.WriteLine("CPF deve conter 11 digitos: ");
+                Console.WriteLine("CPF deve conter 11 digitos");
                 return;
             }
-            if (cpf == "11111111111" || cpf == "'22222222222") ;
+
+            // 3- Validas CPFs com todos os números iguais
+            /* if( cpf == "11111111111" || cpf == "22222222222" || cpf == "33333333333" ||
+                 cpf == "44444444444" || cpf == "55555555555" || cpf == "66666666666" ||
+                 cpf == "77777777777" || cpf == "88888888888" || cpf == "99999999999"                 
+             )*/
+            if (cpf.Distinct().Count() == 1)
             {
-                Console.WriteLine("CPF inválido!! numeros repetidos não são permitidos: ");
+                Console.WriteLine("CPF inválido! Números repetidos não são permitidos");
                 return;
             }
+
+            //4 - Cálculo do 1º Digito verificador
             int soma = 0;
-            char[] cpfvetor = cpf.ToCharArray();
+            char[] cpfVetor = cpf.ToCharArray();
 
             for (int i = 0; i < 9; i++)
             {
-                soma += int.Parse(cpfvetor[i].ToString()) * (10 - i);
+                soma += int.Parse(cpfVetor[i].ToString()) * (10 - i);
             }
             int resto = soma % 11;
 
@@ -41,29 +50,35 @@ namespace _08_ValidaCPF
                 digX = 11 - resto;
             }
 
+            //5 - Cálculo do 2º Digito Verificador
+            soma = 0;
+            //char[] cpfVetor = cpf.ToCharArray();
 
+            for (int i = 0; i < 10; i++)
+            {
+                soma += int.Parse(cpfVetor[i].ToString()) * (11 - i);
+            }
+            resto = soma % 11;
 
+            int digY = 0;
+            if (resto >= 2)
+            {
+                digY = 11 - resto;
+            }
+
+            //6 - Comparar os dígitos
             if (
-                int.Parse(cpf[9].ToString() == digX &&
-                int.Parse(cpf[10].ToString()0 == digY
-                )
+                int.Parse(cpf[9].ToString()) == digX &&
+                int.Parse(cpf[10].ToString()) == digY
+               )
             {
-                Console.WriteLine("Cpf valido");
+                Console.WriteLine("CPF VÁLIDO!");
             }
-            else 
+            else
             {
-                Console.WriteLine("Cpf invalido");    
-
-            }
-
-
-            
-
-
-
-
-
-
+                Console.WriteLine("CPF INVÁLIDO!");
             }
         }
     }
+}
+
