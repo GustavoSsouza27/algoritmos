@@ -18,7 +18,7 @@ namespace _09_Calendario
             Console.Write("Digite o ano:");
             int ano = int.Parse(Console.ReadLine());
 
-            for (int mes = 1; mes <= 12 mes++)
+            for (int mes = 1; mes <= 12; mes++)
             {
                 //Descobre a quantidade de dias de um mês
                 int diasDoMes = DateTime.DaysInMonth(ano, mes);
@@ -50,6 +50,8 @@ namespace _09_Calendario
                         }
                     }
                 }
+
+
 
                 Console.WriteLine($"\nCalendário de " +
                     $"{primeiroDiaMes.ToString("MMMM")} de {ano}");
