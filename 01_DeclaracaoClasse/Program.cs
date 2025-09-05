@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.AccessControl;
-using System.Text;
-using System.Threading.Tasks;
+using System.Security.Cryptography.X509Certificates;
 
 namespace _01_DeclaracaoClasse
 {
@@ -36,6 +32,18 @@ namespace _01_DeclaracaoClasse
             obj5.Base = 12.75;
             obj5.ImprimeArea();
 
+            conta contaGustavo = new conta();
+            contaGustavo.banco = 237;
+            contaGustavo.agencia = "002-7";
+            contaGustavo.numero = "99520-7";
+            contaGustavo.saldo = 0.00;
+            contaGustavo.limite = 500.00;
+
+            contaGustavo.Depositar(1050.00);
+            Console.WriteLine($"Saldo Atual: {contaGustavo.ConsultaSaldo()}");
+
+            contaGustavo.sacar(200.00);
+            Console.WriteLine($"Saldo atual: {contaGustavo.ConsultaSaldo()}");
         }
     }
 
@@ -68,7 +76,6 @@ namespace _01_DeclaracaoClasse
         {
             Console.WriteLine($"Retângulo com largura de {Largura}, altura de {Altura} possui uma área de {CalculaArea()}");
         }
-
     }
 
     public class Circulo
@@ -98,8 +105,68 @@ namespace _01_DeclaracaoClasse
         public void ImprimeArea()
         {
             Console.WriteLine($"Triângulo com base de {Base:N2}, altura de {Altura:N2} possui uma área de {CalculaArea():N2}");
-
         }
     }
 
+    // Classe conta deve estar fora de Triangulo
+    public class conta
+    {
+        public int banco;
+        public string agencia;
+        public string numero;
+        public double saldo;
+        public double limite;
+
+        public void Depositar(double valor)
+        {
+            saldo = saldo + valor;
+        }
+
+        public void sacar(double valor)
+        {
+            if (saldo >= valor)
+            {
+                saldo = saldo - valor;
+            }
+            // Fechando o método sacar corretamente
+        }
+
+
+
+
+        public double ConsultaSaldo()
+        {
+            return saldo;
+        }
+
+        public class aluno
+        {
+            public int codigo;
+            public string nome;
+            public double[] notas = new double[4];
+
+            public void LancaNota(int trimestre, double nota)
+            {
+                notas[trimestre - 1] = nota;  // corrigido o "=" aqui
+            }
+
+            public double CalculaMedia()
+            {
+                double media = 0;
+                foreach (double nota in notas)
+                {
+                    media += nota;
+                }
+                return media / 4.0;
+            }  // fechando CalculaMedia aqui
+
+            public string mencao()
+            {
+                if (CalculaMedia() >= 5.0)
+                    return "aprovado";
+                else
+                    return "reprovado";
+            }
+        }
+    }
 }
